@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>project-library</title>
+  </head>
+  <body>
+    <form id="bookForm" action="#" method="post">
+      Input your book
+      <label for="title">Title: </label>
+      <input type="text" id="title" required placeholder="Type book title" />
+      <label for="author">Author: </label>
+      <input type="text" id="author" required placeholder="Type book author" />
+      <label for="number-of-pages"># of pages: </label>
+      <input
+        type="number"
+        id="number-of-pages"
+        required
+        placeholder="Type number of pages"
+        min="1"
+      />
+      <label for="read">Have you read this book?: </label>
+      <select id="read" required>
+        <option value="">Select...</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+
+      <button class="new-book--button" type="submit">New Book</button>
+    </form>
+    <div id="bookOutput"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
