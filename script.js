@@ -12,6 +12,7 @@ function Book(title, author, numPages, read) {
   this.read = Boolean(read);
   this.id = crypto.randomUUID();
 }
+
 // voy a crear una function que al clickear el button, capture los valores del form, los guarde en variables,
 // luego cree un Book con esas variables y me devuelva el newBook.
 
@@ -61,10 +62,9 @@ document
 
 function displayBook(book) {
   let output = document.getElementById("bookOutput");
-
   let bookCard = document.createElement("div");
   bookCard.classList.add("book-card");
-  bookCard.setAttribute("data-id", book.id);
+  bookCard.dataset.id = book.id;
 
   let bookTitle = document.createElement("h3");
   bookTitle.classList.add("book-title");
@@ -91,7 +91,19 @@ function displayBook(book) {
   deleteButton.textContent = "Delete Book";
 
   deleteButton.addEventListener("click", () => {
-    removeBook(book.id);
+    book.removeBook();
+  });
+
+  let toggleButton = document.createElement("button");
+  toggleButton.classList.add("toggle");
+  toggleButton.textContent = book.read ? "Mark as Unread" : "Mark as Read";
+
+  toggleButton.addEventListener("click", () => {
+    book.toggleRead();
+    toggleButton.textContent = book.read ? "Mark as Unread" : "Mark as Read";
+    // TOGGLE: Hasta acá modifiqué la propiedad read del objeto con la funcion toggleRead y modifique el textContent del toggle button.
+    //Ahora tengo que modificar el textContent del <p> class: "book-read"
+    book.changeReadStatus();
   });
 
   bookCard.appendChild(bookTitle);
@@ -100,17 +112,28 @@ function displayBook(book) {
   bookCard.appendChild(bookRead);
   bookCard.appendChild(bookId);
   bookCard.appendChild(deleteButton);
-
+  bookCard.appendChild(toggleButton);
   output.appendChild(bookCard);
 }
 
-function removeBook(bookId) {
-  let bookToRemove = myLibrary.find((book) => book.id === bookId);
-  myLibrary = myLibrary.filter((book) => book.id !== bookId);
-  let bookCard = document.querySelector(`[data-id='${bookId}']`);
-  if (bookCard) {
-    bookCard.remove();
-  }
+Book.prototype.removeBook = function () {
+  myLibrary = myLibrary.filter((book) => book.id !== this.id);
 
-  console.log(`Libro ${bookToRemove.title} con ID ${bookId} eliminado`);
-}
+  const bookCard = document.querySelector(`[data-id='${this.id}']`);
+  bookCard.remove(); // Optional chaining por si no existe
+
+  console.log(`Libro "${this.title}" y "${this.id}"eliminado`);
+};
+
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+  return this.read;
+};
+
+Book.prototype.changeReadStatus = function () {
+  let bookCard = document.querySelector(`[data-id='${this.id}']`);
+  let readStatus = bookCard.querySelector(".book-read");
+  readStatus.textContent = `Book read?: ${this.read ? "Yes" : "No"}`;
+
+  console.log(this);
+};
