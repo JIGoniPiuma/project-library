@@ -1,16 +1,19 @@
-//1 voy a crear el constructor de Book
-function Book(title, author, numPages, read) {
-  if (!title || !author) {
-    throw new Error("Title and author are required");
+// constructor de book cambiado a Class. Unica modificacion
+
+class Book {
+  constructor(title, author, numPages, read) {
+    if (!title || !author) {
+      throw new Error("Title and author are required");
+    }
+    if (typeof numPages !== "number" || numPages < 1) {
+      throw new Error("Page count must be a positive number");
+    }
+    this.title = title;
+    this.author = author;
+    this.numPages = numPages;
+    this.read = Boolean(read);
+    this.id = crypto.randomUUID();
   }
-  if (typeof numPages !== "number" || numPages < 1) {
-    throw new Error("Page count must be a positive number");
-  }
-  this.title = title;
-  this.author = author;
-  this.numPages = numPages;
-  this.read = Boolean(read);
-  this.id = crypto.randomUUID();
 }
 
 // voy a crear una function que al clickear el button, capture los valores del form, los guarde en variables,
